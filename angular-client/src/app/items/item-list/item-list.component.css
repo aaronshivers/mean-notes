@@ -1,0 +1,29 @@
+.list {
+  padding: 0;
+}
+
+.list__item {
+  margin: 1rem 0;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list__item--completed {
+  color: #444444;
+  text-decoration: line-through;
+}
+
+.list__text {
+  cursor: pointer;
+}
+
+.list__button {
+  background-color: crimson;
+}
+
+.list__button:hover {
+  background-color: #a70f2e;
+}

@@ -1,0 +1,14 @@
+<ul class="list">
+  <li
+    class="list__item"
+    *ngFor="let item of items">
+      <span
+        class="list__text"
+        [ngClass]="item.completed ? 'completed' : null"
+        (click)="onComplete(item.id)">{{ item.text }}</span>
+    <button
+      class="button list__button"
+      (click)="onDelete(item.id)">X
+    </button>
+  </li>
+</ul>
