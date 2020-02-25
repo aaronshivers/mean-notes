@@ -25,6 +25,6 @@ export class ItemService {
 
   toggleCompleted(item: Item): Observable<Item> {
     item.completed = !item.completed;
-    return this.http.patch<Item>(this.url + item.id, item);
+    return this.http.patch<Item>(this.url + item._id, item);
   }
 }

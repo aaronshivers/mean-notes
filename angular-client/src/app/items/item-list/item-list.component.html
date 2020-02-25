@@ -7,7 +7,7 @@
       [ngClass]="item.completed ? 'completed' : null"
       class="list__text">{{ item.text }}</span>
     <button
-      (click)="onDelete(item.id)"
+      (click)="onDelete(item._id)"
       class="button list__button">X
     </button>
   </li>

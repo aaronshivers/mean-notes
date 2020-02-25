@@ -18,7 +18,7 @@ export class ItemListComponent implements OnInit {
   }
 
   onDelete(id: string): void {
-    this.itemService.deleteItem(id);
+    this.itemService.deleteItem(id).subscribe();
   }
 
   onToggleCompleted(item: Item): void {
