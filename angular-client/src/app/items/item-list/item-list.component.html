@@ -1,14 +1,14 @@
 <ul class="list">
   <li
-    class="list__item"
-    *ngFor="let item of items">
-      <span
-        class="list__text"
-        [ngClass]="item.completed ? 'completed' : null"
-        (click)="onComplete(item.id)">{{ item.text }}</span>
+    *ngFor="let item of items$ | async"
+    class="list__item">
+    <span
+      (click)="onToggleCompleted(item)"
+      [ngClass]="item.completed ? 'completed' : null"
+      class="list__text">{{ item.text }}</span>
     <button
-      class="button list__button"
-      (click)="onDelete(item.id)">X
+      (click)="onDelete(item.id)"
+      class="button list__button">X
     </button>
   </li>
 </ul>

@@ -17,9 +17,7 @@ export class ItemFormComponent {
     const text = this.itemForm.value.text;
 
     if (text) {
-      this.itemService.postItem(text).subscribe((item: Item) => {
-        console.log(item);
-      });
+      this.itemService.postItem(text);
     }
 
     this.itemForm.resetForm();

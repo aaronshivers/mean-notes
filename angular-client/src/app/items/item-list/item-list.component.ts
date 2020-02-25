@@ -1,6 +1,7 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { ItemService } from '../item.service';
 import { Item } from '../item';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-item-list',
@@ -8,7 +9,7 @@ import { Item } from '../item';
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
-  items: Item[];
+  items$: Observable<Item[]>;
 
   constructor(private itemService: ItemService) { }
 
@@ -16,18 +17,15 @@ export class ItemListComponent implements OnInit {
     this.getItems();
   }
 
-  onDelete(id: string) {
+  onDelete(id: string): void {
     this.itemService.deleteItem(id);
   }
 
-  onComplete(id: string) {
-    this.itemService.toggleCompleted(id);
+  onToggleCompleted(item: Item): void {
+    this.itemService.toggleCompleted(item);
   }
 
-  // getItems items
   getItems(): void {
-    this.itemService.getItems().subscribe((items: Item[]) => {
-      this.items = items;
-    });
+    this.items$ = this.itemService.getItems();
   }
 }
