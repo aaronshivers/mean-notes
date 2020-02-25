@@ -93,51 +93,95 @@ describe('/notes', () => {
 
   describe('GET /notes/:id', () => {
 
-      describe('if `id` is invalid', () => {
+    describe('if `id` is invalid', () => {
 
-        it('should respond 400', async () => {
+      it('should respond 400', async () => {
+        await request(app)
+          .get(`/notes/1234`)
+          .expect(400)
+      })
+    })
+
+    describe('if `id` is valid', () => {
+
+      describe('and no note is found', () => {
+
+        it('should respond 404', async () => {
           await request(app)
-            .get(`/notes/1234`)
-            .expect(400)
+            .get(`/notes/5e4983e0186afc3c3b684bbb`)
+            .expect(404)
+            .expect(res => {
+              expect(res.text)
+                .toEqual(JSON.stringify({ error: 'Note Not Found' }))
+            })
         })
       })
 
-      describe('if `id` is valid', () => {
+      describe('and the note is found', () => {
 
-        describe('and no note is found', () => {
-
-          it('should respond 404', async () => {
-            await request(app)
-              .get(`/notes/5e4983e0186afc3c3b684bbb`)
-              .expect(404)
-              .expect(res => {
-                expect(res.text)
-                  .toEqual(JSON.stringify({ error: 'Note Not Found' }))
-              })
-          })
+        beforeEach(async () => {
+          await new Note(note).save()
         })
 
-        describe('and the note is found', () => {
+        it('should respond 200', async () => {
+          await request(app)
+            .get(`/notes/${ note._id }`)
+            .expect(200)
+        })
 
-          beforeEach(async () => {
-            await new Note(note).save()
-          })
-
-          it('should respond 200', async () => {
-            await request(app)
-              .get(`/notes/${ note._id }`)
-              .expect(200)
-          })
-
-          it('should return the specified note', async () => {
-            await request(app)
-              .get(`/notes/${ note._id }`)
-              .expect(res => {
-                expect(res.text).toContain(note._id)
-                expect(res.text).toContain(note.text)
-              })
-          })
+        it('should return the specified note', async () => {
+          await request(app)
+            .get(`/notes/${ note._id }`)
+            .expect(res => {
+              expect(res.text).toContain(note._id)
+              expect(res.text).toContain(note.text)
+            })
         })
       })
     })
+  })
+
+  describe('DELETE /notes/:id', () => {
+
+    describe('if `id` is invalid', () => {
+
+      it('should respond 400', async () => {
+        await request(app)
+          .delete(`/notes/1234`)
+          .expect(400)
+      })
+    })
+
+    describe('if `id` is valid', () => {
+
+      describe('and note does not exist', () => {
+
+        it('should respond 404', async () => {
+          await request(app)
+            .delete(`/notes/5e547e0d22e5ea5888ca32d2`)
+            .expect(404)
+        })
+
+        it('should return an error message', async () => {
+          await request(app)
+            .delete(`/notes/5e547e0d22e5ea5888ca32d2`)
+            .expect(res => {
+              expect(res.text)
+                .toEqual(JSON.stringify({ error: 'Note Not Found' }))
+            })
+        })
+      })
+
+      describe('and note does exist', () => {
+
+        beforeEach(async () => await new Note(note).save())
+
+        it('should respond 200', async () => {
+          await request(app)
+            .delete(`/notes/${ note._id }`)
+            .expect(200)
+        })
+      })
+    })
+  })
 })
