@@ -1,6 +1,11 @@
-version: '3'
+version: '3.7'
 
 services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+
   angular:
     build: angular-client
     ports:
@@ -9,11 +14,11 @@ services:
       - ./angular-client:/app
 
   express:
-    build: express-server
+    build:
+     context: express-server
     ports:
       - "3000:3000"
-
-  mongo:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
+    volumes:
+    - ./express-server:/app
+    environment:
+      SCRIPT: test-watch

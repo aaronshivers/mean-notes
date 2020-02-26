@@ -27,12 +27,12 @@ router.post('/notes', async (req, res) => {
 })
 
 router.get('/notes', async (req, res) => {
-  console.log('GET /notes')
+
   try {
 
     // find all notes
     const notes = await Note.find()
-    console.log(notes)
+
     // reject if there are no notes
     if (notes.length <= 0) return res.status(500).json({ 'error': 'No Notes Found' })
 
