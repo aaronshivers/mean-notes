@@ -16,6 +16,7 @@ services:
   express:
     build:
      context: express-server
+    restart: on-failure
     ports:
       - "3000:3000"
     volumes:
