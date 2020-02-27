@@ -8,18 +8,18 @@ const Note = require('../../models/notes')
 describe('/notes', () => {
   let note
 
-  beforeEach(() => {
+  beforeEach(async () => {
     note = {
       _id: new ObjectId(),
       text: 'note1',
     }
+
+    await Note.deleteMany()
+    await new Note(note).save()
   })
 
-  describe('POST /notes', () => {
 
-    beforeEach(async () => {
-      await Note.deleteMany()
-    })
+  describe('POST /notes', () => {
 
     it('should respond 201', async () => {
       await request(app)
@@ -39,13 +39,14 @@ describe('/notes', () => {
       expect(foundNote.text).toEqual(note.text)
     })
 
-    it('should create only one note', async () => {
+    it('should add a second note', async () => {
+
       await request(app)
         .post('/notes')
         .send(note)
 
       const foundNotes = await Note.find()
-      expect(foundNotes.length).toBe(1)
+      expect(foundNotes.length).toBe(2)
     })
   })
 
@@ -72,8 +73,6 @@ describe('/notes', () => {
     })
 
     describe('if there are notes', () => {
-
-      beforeEach(async () => await new Note(note).save())
 
       it('should respond 200', async () => {
         await request(app)
@@ -119,10 +118,6 @@ describe('/notes', () => {
 
       describe('and the note is found', () => {
 
-        beforeEach(async () => {
-          await new Note(note).save()
-        })
-
         it('should respond 200', async () => {
           await request(app)
             .get(`/notes/${ note._id }`)
@@ -150,6 +145,15 @@ describe('/notes', () => {
           .delete(`/notes/1234`)
           .expect(400)
       })
+
+      it('should not delete any notes', async () => {
+        await request(app)
+          .delete(`/notes/1234`)
+
+        const foundNotes = await Note.find();
+        expect(foundNotes).toBeTruthy();
+        expect(foundNotes.length).toBe(1);
+      })
     })
 
     describe('if `id` is valid', () => {
@@ -173,8 +177,6 @@ describe('/notes', () => {
       })
 
       describe('and note does exist', () => {
-
-        beforeEach(async () => await new Note(note).save())
 
         it('should respond 200', async () => {
           await request(app)
