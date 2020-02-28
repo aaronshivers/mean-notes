@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataStorageService } from '../data-storage.service';
 
 @Component({
   selector: 'app-items',
@@ -6,4 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: [ './items.component.css' ],
 })
 export class ItemsComponent {
+  constructor(private dataStorageService: DataStorageService) {
+    this.dataStorageService.fetchItems().subscribe();
+  }
 }

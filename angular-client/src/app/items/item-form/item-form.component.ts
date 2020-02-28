@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ItemService } from '../item.service';
 import { Item } from '../item';
@@ -11,15 +11,17 @@ import { Item } from '../item';
 export class ItemFormComponent {
   @ViewChild('itemForm', { static: false }) itemForm: NgForm;
 
-  constructor(private itemService: ItemService) { }
+  constructor(
+    private itemService: ItemService,
+  ) { }
 
   onAddItem(): void {
     const text = this.itemForm.value.text;
-
-    if (text) {
-      this.itemService.postItem(text);
+    if (!text) {
+      return;
     }
-
+    this.itemService.addItem({ text } as Item)
+      .subscribe();
     this.itemForm.resetForm();
   }
 }
