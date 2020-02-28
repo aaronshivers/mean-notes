@@ -20,8 +20,7 @@ export class ItemFormComponent {
     if (!text) {
       return;
     }
-    this.itemService.addItem({ text } as Item)
-      .subscribe();
+    this.itemService.addItem({ text } as Item);
     this.itemForm.resetForm();
   }
 }

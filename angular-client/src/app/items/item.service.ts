@@ -38,8 +38,9 @@ export class ItemService implements OnInit, OnChanges {
     return this.items.slice();
   }
 
-  addItem(item: Item): Observable<Item> {
-    return this.http.post<Item>(this.itemsUrl, item);
+  addItem(item: Item): void {
+    this.items.push(item);
+    this.itemsChanged.next(this.items.slice());
   }
 
   deleteItem(id: string): Observable<Item> {
