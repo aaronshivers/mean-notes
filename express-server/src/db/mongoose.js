@@ -4,6 +4,7 @@ const options = {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 }
 
 const a = 'mongodb://mongo:/mean-notes'

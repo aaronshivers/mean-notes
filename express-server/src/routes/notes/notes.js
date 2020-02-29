@@ -103,19 +103,22 @@ router.patch('/notes/:id', async (req, res) => {
     // get note id
     const { id } = req.params
 
-    // find note by id and update
-    const note = await Note.findById(id)
-
-    // throw error if note is not found in the DB
-    if (!note) return res.status(404).json({ error: 'Note Not Found' })
-
     // get updated status from body
     const completed = req.body.completed
 
-    // throw error if `typeof completed` is not boolean
-    if (typeof completed !== 'boolean') {
-      return res.status(400).json()
+    // throw error if `typeof update.completed` is not boolean
+    if (completed && typeof completed !== 'boolean') {
+      return res.status(400).json({ error: 'Completed Must be Boolean' })
     }
+
+    // find note by id and update
+    const foundNote = await Note.findByIdAndUpdate(id, { completed })
+
+    // throw error if note is not found in the DB
+    if (!foundNote) return res.status(404).json({ error: 'Note Not Found' })
+
+    // respond 201 and send note
+    res.status(201).json(foundNote)
 
   } catch (error) {
 
