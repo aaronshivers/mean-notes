@@ -150,9 +150,9 @@ describe('/notes', () => {
         await request(app)
           .delete(`/notes/1234`)
 
-        const foundNotes = await Note.find();
-        expect(foundNotes).toBeTruthy();
-        expect(foundNotes.length).toBe(1);
+        const foundNotes = await Note.find()
+        expect(foundNotes).toBeTruthy()
+        expect(foundNotes.length).toBe(1)
       })
     })
 
@@ -182,6 +182,54 @@ describe('/notes', () => {
           await request(app)
             .delete(`/notes/${ note._id }`)
             .expect(200)
+        })
+      })
+    })
+  })
+
+  describe('PATCH /notes/:id', () => {
+
+    describe('if `id` is invalid', () => {
+
+      it('should respond 400', async () => {
+        await request(app)
+          .patch(`/notes/1234`)
+          .expect(400)
+      })
+    })
+
+    describe('if `id` is valid', () => {
+
+      describe('and if `id` is not in the DB', () => {
+
+        it('should respond 404', async () => {
+          await request(app)
+            .patch(`/notes/` + new ObjectId())
+            .expect(404)
+        })
+      })
+
+      describe('and if `id` is in the DB', () => {
+
+        describe('and if updated data is invalid', () => {
+          const update = { completed: 1234 }
+
+          it('should respond 400', async () => {
+            await request(app)
+              .patch(`/notes/${ note._id }`)
+              .expect(400)
+              .send(update)
+          })
+
+          it('should not update the specified note', () => {
+          })
+        })
+        describe('and if updated data is valid', () => {
+
+          it('should respond 201', () => {
+          })
+          it('should update the specified note', () => {
+          })
         })
       })
     })

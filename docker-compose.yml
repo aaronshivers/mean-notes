@@ -21,4 +21,4 @@ services:
     volumes:
     - ./express-server:/app
     environment:
-      SCRIPT: start
+      SCRIPT: test-watch

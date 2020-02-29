@@ -44,6 +44,8 @@ export class ItemService implements OnInit, OnChanges {
   }
 
   deleteItem(id: string): Observable<Item> {
+    this.items = this.items.filter(item => item._id !== id);
+    this.itemsChanged.next(this.items.slice());
     return this.http.delete<Item>(this.itemsUrl + id);
   }
 

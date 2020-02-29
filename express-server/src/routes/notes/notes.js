@@ -33,7 +33,7 @@ router.get('/notes', async (req, res) => {
     // find all notes
     const notes = await Note.find()
 
-    // reject if there are no notes
+    // throw error if there are no notes
     if (notes.length <= 0) return res.status(500).json({ 'error': 'No Notes Found' })
 
     // return notes
@@ -56,7 +56,7 @@ router.get('/notes/:id', async (req, res) => {
     // find note by note id
     const note = await Note.findById(id)
 
-    // reject if note is not found in the DB
+    // throw error if note is not found in the DB
     if (!note) return res.status(404).json({ error: 'Note Not Found' })
 
     // render note data
@@ -81,11 +81,41 @@ router.delete('/notes/:id', async (req, res) => {
     // find note by note id
     const note = await Note.findByIdAndDelete(id)
 
-    // reject if note is not found in the DB
+    // throw error if note is not found in the DB
     if (!note) return res.status(404).json({ error: 'Note Not Found' })
 
     // render note data
     res.status(200).json(note)
+
+  } catch (error) {
+
+    // send error message
+    res.status(400).json({ error: error.message })
+
+  }
+
+})
+
+router.patch('/notes/:id', async (req, res) => {
+
+  try {
+
+    // get note id
+    const { id } = req.params
+
+    // find note by id and update
+    const note = await Note.findById(id)
+
+    // throw error if note is not found in the DB
+    if (!note) return res.status(404).json({ error: 'Note Not Found' })
+
+    // get updated status from body
+    const completed = req.body.completed
+
+    // throw error if `typeof completed` is not boolean
+    if (typeof completed !== 'boolean') {
+      return res.status(400).json()
+    }
 
   } catch (error) {
 
