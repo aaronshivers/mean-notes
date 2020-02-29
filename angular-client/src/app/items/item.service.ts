@@ -34,13 +34,14 @@ export class ItemService implements OnInit, OnChanges {
   }
 
   getItems(): Item[] {
-    console.log(this.items);
     return this.items.slice();
   }
 
   addItem(item: Item): void {
     this.items.push(item);
     this.itemsChanged.next(this.items.slice());
+    this.http.post<Item>(this.itemsUrl, item)
+      .subscribe((item: Item) => console.log(item));
   }
 
   deleteItem(id: string): Observable<Item> {
@@ -50,9 +51,7 @@ export class ItemService implements OnInit, OnChanges {
   }
 
   toggleCompleted(item: Item): Observable<Item> {
-    console.log(item);
     item.completed = !item.completed;
-    console.log(item);
     return this.http.patch<Item>(this.itemsUrl + item._id, item);
   }
 }

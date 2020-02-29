@@ -19,7 +19,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.itemSubscription = this.itemService.itemsChanged
       .subscribe((items: Item[]) => {
         this.items = items;
-        console.log(items);
+        console.log('items', items);
       });
   }
 
@@ -32,6 +32,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(id: string): void {
+    console.log('onDelete()');
     this.itemService.deleteItem(id).subscribe();
   }
 
