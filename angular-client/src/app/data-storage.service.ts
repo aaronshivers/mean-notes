@@ -16,11 +16,6 @@ export class DataStorageService {
     private itemService: ItemService,
   ) {}
 
-  storeItems(): void {
-    const items = this.itemService.getItems();
-    this.http.patch(this.itemsUrl, items).subscribe();
-  }
-
   fetchItems(): Observable<Item[]> {
     return this.http.get(this.itemsUrl).pipe(
       map((items: Item[]) => items),

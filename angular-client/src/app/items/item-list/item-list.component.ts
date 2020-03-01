@@ -33,11 +33,11 @@ export class ItemListComponent implements OnInit, OnDestroy {
 
   onDelete(id: string): void {
     console.log('onDelete()');
-    this.itemService.deleteItem(id)
+    this.itemService.deleteItem(id);
   }
 
   onToggleCompleted(item: Item): void {
-    this.itemService.toggleCompleted(item)
-      .subscribe(() => this.getItems());
+    console.log('onToggleCompleted', item);
+    this.itemService.toggleCompleted(item);
   }
 }

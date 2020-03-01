@@ -12,7 +12,7 @@ import { Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ItemService implements OnInit, OnChanges {
+export class ItemService {
   itemsUrl: string = 'http://localhost:3000/notes/';
   itemsChanged = new Subject<Item[]>();
   private items: Item[] = [];
@@ -23,14 +23,6 @@ export class ItemService implements OnInit, OnChanges {
     this.items = items;
     console.log('setItems()', items);
     this.itemsChanged.next(this.items.slice());
-  }
-
-  ngOnInit(): void {
-    console.log(this.items);
-  }
-
-  ngOnChanges(): void {
-    console.log(this.items);
   }
 
   getItems(): Item[] {
@@ -50,8 +42,9 @@ export class ItemService implements OnInit, OnChanges {
     this.http.delete<Item>(this.itemsUrl + id).subscribe();
   }
 
-  toggleCompleted(item: Item): Observable<Item> {
+  toggleCompleted(item: Item): void {
     item.completed = !item.completed;
-    return this.http.patch<Item>(this.itemsUrl + item._id, item);
+    this.itemsChanged.next(this.items.slice());
+    this.http.patch<Item>(this.itemsUrl + item._id, item).subscribe();
   }
 }

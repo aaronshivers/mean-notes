@@ -4,7 +4,7 @@
     class="list__item">
     <span
       (click)="onToggleCompleted(item)"
-      [ngClass]="item.completed ? 'completed' : null"
+      [ngClass]="item.completed ? 'list__item--completed' : null"
       class="list__text">{{ item.text }}</span>
     <button
       (click)="onDelete(item._id)"
