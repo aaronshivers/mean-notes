@@ -3,7 +3,7 @@
     *ngFor="let item of items"
     class="list__item">
     <span
-      (click)="onToggleCompleted(item)"
+      (click)="onToggleCompleted(item._id)"
       [ngClass]="item.completed ? 'list__item--completed' : null"
       class="list__text">{{ item.text }}</span>
     <button

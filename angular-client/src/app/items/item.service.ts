@@ -39,9 +39,15 @@ export class ItemService {
     }
   }
 
-  toggleCompleted(item: Item): void {
-    item.completed = !item.completed;
-    this.http.patch<Item>(this.itemsUrl + item._id, item)
+  toggleCompleted(id: string): void {
+    const itemIndex = this.getItemIndex(id);
+    const item = this.items[itemIndex];
+
+    if (itemIndex >= 0) {
+      item.completed = !item.completed;
+    }
+
+    this.http.patch<Item>(this.itemsUrl + id, item)
       .subscribe(() => {
         this.itemsChanged.next(this.items.slice());
       });

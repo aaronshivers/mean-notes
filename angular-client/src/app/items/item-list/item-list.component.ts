@@ -38,7 +38,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.itemService.deleteItem(id);
   }
 
-  onToggleCompleted(item: Item): void {
-    this.itemService.toggleCompleted(item);
+  onToggleCompleted(id: string): void {
+    this.itemService.toggleCompleted(id);
   }
 }
