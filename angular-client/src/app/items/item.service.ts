@@ -44,10 +44,10 @@ export class ItemService implements OnInit, OnChanges {
       .subscribe((item: Item) => console.log(item));
   }
 
-  deleteItem(id: string): Observable<Item> {
+  deleteItem(id: string): void {
     this.items = this.items.filter(item => item._id !== id);
     this.itemsChanged.next(this.items.slice());
-    return this.http.delete<Item>(this.itemsUrl + id);
+    this.http.delete<Item>(this.itemsUrl + id).subscribe();
   }
 
   toggleCompleted(item: Item): Observable<Item> {
