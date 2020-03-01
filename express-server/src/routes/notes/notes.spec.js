@@ -56,10 +56,10 @@ describe('/notes', () => {
 
       beforeEach(async () => await Note.deleteMany())
 
-      it('should respond 500', async () => {
+      it('should respond 200', async () => {
         await request(app)
           .get('/notes')
-          .expect(500)
+          .expect(200)
       })
 
       it('should return an error message', async () => {
@@ -69,6 +69,17 @@ describe('/notes', () => {
             expect(res.text)
               .toEqual(JSON.stringify({ error: 'No Notes Found' }))
           })
+      })
+
+
+
+      it('should have nothing in the database', async () => {
+        await request(app)
+          .get('/notes')
+
+        const foundNotes = await Note.find()
+        console.log(foundNotes)
+        expect(foundNotes.length).toBe(0)
       })
     })
 

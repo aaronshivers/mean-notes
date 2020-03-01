@@ -19,6 +19,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-    - ./express-server:/app
+      - ./express-server:/app
+      - /app/node_modules
     environment:
-      SCRIPT: start
+      SCRIPT: test-watch

@@ -34,7 +34,7 @@ router.get('/notes', async (req, res) => {
     const notes = await Note.find()
 
     // throw error if there are no notes
-    if (notes.length <= 0) return res.status(500).json({ 'error': 'No Notes Found' })
+    if (notes.length <= 0) return res.status(200).json({ 'error': 'No Notes Found' })
 
     // return notes
     res.status(200).json(notes)
