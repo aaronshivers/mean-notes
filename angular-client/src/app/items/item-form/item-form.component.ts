@@ -17,10 +17,7 @@ export class ItemFormComponent {
 
   onAddItem(): void {
     const text = this.itemForm.value.text;
-    if (!text) {
-      return;
-    }
-    console.log('onAddItem()', text);
+    if (!text) return;
     this.itemService.addItem({ text } as Item);
     this.itemForm.resetForm();
   }

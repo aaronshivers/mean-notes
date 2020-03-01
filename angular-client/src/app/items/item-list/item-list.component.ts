@@ -16,11 +16,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getItems();
-    this.itemSubscription = this.itemService.itemsChanged
-      .subscribe((items: Item[]) => {
-        this.items = items;
-        console.log('items', items);
-      });
+    this.updateItems();
   }
 
   ngOnDestroy(): void {
@@ -31,13 +27,18 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.items = this.itemService.getItems();
   }
 
+  updateItems(): void {
+    this.itemSubscription = this.itemService.itemsChanged
+      .subscribe((items: Item[]) => {
+        this.items = items;
+      });
+  }
+
   onDelete(id: string): void {
-    console.log('onDelete()');
     this.itemService.deleteItem(id);
   }
 
   onToggleCompleted(item: Item): void {
-    console.log('onToggleCompleted', item);
     this.itemService.toggleCompleted(item);
   }
 }

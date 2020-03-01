@@ -1,13 +1,7 @@
-import {
-  EventEmitter,
-  Injectable,
-  OnChanges,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Item } from './item';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +15,6 @@ export class ItemService {
 
   setItems(items: Item[]): void {
     this.items = items;
-    console.log('setItems()', items);
     this.itemsChanged.next(this.items.slice());
   }
 
@@ -30,21 +23,33 @@ export class ItemService {
   }
 
   addItem(item: Item): void {
-    this.items.push(item);
-    this.itemsChanged.next(this.items.slice());
     this.http.post<Item>(this.itemsUrl, item)
-      .subscribe((item: Item) => console.log(item));
+      .subscribe((item: Item) => {
+        this.items.push(item);
+        this.itemsChanged.next(this.items.slice());
+      });
   }
 
   deleteItem(id: string): void {
-    this.items = this.items.filter(item => item._id !== id);
-    this.itemsChanged.next(this.items.slice());
-    this.http.delete<Item>(this.itemsUrl + id).subscribe();
+    const itemIndex = this.getItemIndex(id);
+    if (itemIndex >= 0) {
+      this.items.splice(itemIndex, 1);
+      this.http.delete<Item>(this.itemsUrl + id)
+        .subscribe(() => {
+          this.itemsChanged.next(this.items.slice());
+        });
+    }
   }
 
   toggleCompleted(item: Item): void {
     item.completed = !item.completed;
-    this.itemsChanged.next(this.items.slice());
-    this.http.patch<Item>(this.itemsUrl + item._id, item).subscribe();
+    this.http.patch<Item>(this.itemsUrl + item._id, item)
+      .subscribe(() => {
+        this.itemsChanged.next(this.items.slice());
+      });
+  }
+
+  private getItemIndex(id: string): number {
+    return this.items.findIndex(item => item._id === id);
   }
 }
