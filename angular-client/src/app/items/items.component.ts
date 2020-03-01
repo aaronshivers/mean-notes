@@ -6,8 +6,4 @@ import { ItemService } from './item.service';
   templateUrl: './items.component.html',
   styleUrls: [ './items.component.css' ],
 })
-export class ItemsComponent {
-  constructor(private itemService: ItemService) {
-    this.itemService.fetchItems().subscribe();
-  }
-}
+export class ItemsComponent {}

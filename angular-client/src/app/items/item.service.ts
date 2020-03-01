@@ -12,18 +12,8 @@ export class ItemService {
   itemsChanged = new Subject<Item[]>();
   private items: Item[] = [];
 
-  constructor(private http: HttpClient) {}
-
-  setItems(items: Item[]): void {
-    this.items = items;
-    this.itemsChanged.next(this.items.slice());
-  }
-
-  fetchItems(): Observable<Item[]> {
-    return this.http.get(this.itemsUrl).pipe(
-      map((items: Item[]) => items),
-      tap(items => this.setItems(items)),
-    );
+  constructor(private http: HttpClient) {
+    this.fetchItems().subscribe();
   }
 
   getItems(): Item[] {
@@ -55,6 +45,18 @@ export class ItemService {
       .subscribe(() => {
         this.itemsChanged.next(this.items.slice());
       });
+  }
+
+  private fetchItems(): Observable<Item[]> {
+    return this.http.get(this.itemsUrl).pipe(
+      map((items: Item[]) => items),
+      tap(items => this.setItems(items)),
+    );
+  }
+
+  private setItems(items: Item[]): void {
+    this.items = items;
+    this.itemsChanged.next(this.items.slice());
   }
 
   private getItemIndex(id: string): number {
