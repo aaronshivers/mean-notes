@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ItemService } from './items/item.service';
-import { DataStorageService } from './data-storage.service';
+import { DataStorageService, ItemService } from './items/item.service';
 import { Item } from './items/item';
 import {
   ActivatedRouteSnapshot,
