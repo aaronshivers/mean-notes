@@ -5,9 +5,6 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN npm install
-RUN npm install cross-env
-
-RUN npm i -g nodemon
 
 COPY . .
 

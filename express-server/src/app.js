@@ -13,6 +13,7 @@ require('./db/mongoose')()
 
 const indexRoutes = require('./routes/index/index')
 const notesRoutes = require('./routes/notes/notes')
+const usersRoutes = require('./routes/users/users')
 
 app.use(helmet())
 app.use(cors())
@@ -21,6 +22,7 @@ app.use(timeout('5s'))
 
 app.use(indexRoutes)
 app.use(notesRoutes)
+app.use(usersRoutes)
 
 app.use((req, res, next) => {
   res.status(404).json({ 'error': 'Sorry, we cannot find that!' })
