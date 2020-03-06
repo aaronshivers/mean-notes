@@ -1,7 +1,16 @@
 const mongoose = require('mongoose')
+const joi = require('@hapi/joi')
 
 const userSchema = new mongoose.Schema({
-  email: {},
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    minlength: 5,
+    maxlength: 100,
+  },
   password: {},
   createdAt: {}
 })
