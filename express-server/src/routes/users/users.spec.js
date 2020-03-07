@@ -11,8 +11,8 @@ describe('/users', () => {
   beforeEach(async () => {
     user = {
       _id: new ObjectId(),
-      email: 'user1',
-      password: 'pass1',
+      email: 'user1@example.net',
+      password: 'asdfASDF1234!@#$',
     }
 
     await User.deleteMany()
@@ -81,8 +81,6 @@ describe('/users', () => {
   // POST /users
   describe('POST /users', () => {
 
-    beforeEach(async () => await User.deleteMany())
-
     describe('if `email` is invalid', () => {
 
       const userWithInvalidEmail = {
@@ -139,28 +137,57 @@ describe('/users', () => {
         const foundUser = await User.findOne({ email: userWithInvalidPassword.email })
         expect(foundUser).toBeFalsy()
       })
+    })
 
-      //   })
-      //   describe('if `email` and `password` are valid', () => {
-      //     describe('and `email` is already in the DB', () => {
-      //       it('should respond 400', async () => {
-      //       })
-      //       it('should not add the user to the DB', async () => {
-      //       })
-      //     })
-      //     describe('and `email` is not already in the DB', () => {
-      //       it('should respond 200', async () => {
-      //       })
-      //       it('should hash the password', async () => {
-      //       })
-      //       it('should return the auth token', async () => {
-      //       })
-      //       it('should return the user data', async () => {
-      //       })
-      //       it('should add the user to the DB', async () => {
-      //       })
-      //     })
-      //   })
+    describe('if `email` and `password` are valid', () => {
+
+      describe('and `email` is already in the DB', () => {
+
+        const duplicateUser = {
+          email: 'user1@example.net',
+          password: 'asdfASDF1234!@#$',
+        }
+
+        it('should respond 400', async () => {
+          await request(app)
+            .post('/users')
+            .send(duplicateUser)
+            .expect(400)
+        })
+
+        it('should not add the user to the DB', async () => {
+          await request(app)
+            .post('/users')
+            .send(duplicateUser)
+
+          const foundUser = await User.find()
+          console.log(foundUser)
+          expect(foundUser).toBeFalsy()
+          // const users = await User.find()
+          // console.log(users)
+        })
+      })
+
+      describe('and `email` is not already in the DB', () => {
+
+        const newUser = { email: 'user2@example.net', password: 'asdfASDF1234!@#$' }
+
+        it('should respond 200', async () => {
+          await request(app)
+            .post('/users')
+            .send(newUser)
+            .expect(200)
+        })
+        //       it('should hash the password', async () => {
+        //       })
+        //       it('should return the auth token', async () => {
+        //       })
+        //       it('should return the user data', async () => {
+        //       })
+        //       it('should add the user to the DB', async () => {
+        //       })
+        //     })
+      })
     })
 
     // // GET /users

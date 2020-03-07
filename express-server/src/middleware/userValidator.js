@@ -7,9 +7,10 @@ const userValidator = async user => {
     email:
       Joi
         .string()
-        .min(20)
+        .min(5)
         .max(100)
-        .email({ minDomainSegments: 2 }),
+        .email({ minDomainSegments: 1 })
+        .required(),
     password:
       Joi
         .string()

@@ -12,18 +12,27 @@ router.post('/users/login', (req, res) => {
 router.post('/users', validate(userValidator), async (req, res) => {
 
   try {
-    // get email from body
-    const { email } = req.body
+
+    // get email and password from body
+    const { email, password } = req.body
+
+    // check DB for existing user
+    // const existingUser = await User.findOne({ email })
+    // if (existingUser) return res.status(400).send('User Already Registered')
 
     // create user
-    const user = await new User({ email })
+    const user = await new User({ email, password })
 
     // save user
-    user.save()
+    await user.save()
 
-    res.sendStatus(400)
+    // respond 200 and return user data
+    res.status(200).json(user)
+
   } catch (error) {
-    res.send(error.message)
+
+    // return an error message
+    res.status(400).send(error.message)
   }
 })
 

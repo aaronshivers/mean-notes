@@ -7,12 +7,17 @@ const options = {
   useFindAndModify: false,
 }
 
-const a = 'mongodb://mongo:/mean-notes'
-const b = 'mongodb://localhost:27017/notes'
+let server = '';
+
+if (process.env.NODE_ENV === 'development') {
+  server = 'mongodb://localhost:27017/notes'
+} else {
+  server = 'mongodb://mongo:/mean-notes'
+}
 
 const connectToDB = async () => {
   try {
-    const conn = await mongoose.connect(a, options)
+    const conn = await mongoose.connect(server, options)
     console.log(`MongoDB Connected: ${ conn.connection.host }`)
   } catch (error) {
     console.log(error.message)
