@@ -18,7 +18,7 @@ router.post('/users', validate(userValidator), async (req, res) => {
 
     // check DB for existing user
     const existingUser = await User.findOne({ email })
-    if (existingUser) return res.status(400).json({ error: 'User Already Registered'})
+    if (existingUser) return res.status(400).json({ error: 'User Already Registered' })
 
     // create user
     const user = await new User({ email, password })
@@ -26,8 +26,11 @@ router.post('/users', validate(userValidator), async (req, res) => {
     // save user
     await user.save()
 
+    // create auth token
+    await user.createAuthToken();
+
     // respond 200 and return user data
-    res.status(200).json(user)
+    res.status(200).json({ user })
 
   } catch (error) {
 

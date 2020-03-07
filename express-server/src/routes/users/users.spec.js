@@ -191,15 +191,51 @@ describe('/users', () => {
             .send(newUser)
             .expect(200)
         })
-        //       it('should hash the password', async () => {
-        //       })
-        //       it('should return the auth token', async () => {
-        //       })
-        //       it('should return the user data', async () => {
-        //       })
-        //       it('should add the user to the DB', async () => {
-        //       })
-        //     })
+
+        it('should hash the password', async () => {
+          await request(app)
+            .post('/users')
+            .send(newUser)
+            .expect(res => {
+              expect(res.body.user.password).not.toEqual(user.password)
+            })
+
+          const foundUser = await User.findOne({ email: user.email })
+          expect(foundUser.password).not.toEqual(user.password)
+        })
+
+        it('should create an auth token', async () => {
+          await request(app)
+            .post('/users')
+            .send(newUser)
+            .expect(res => {
+              expect(res.body.user.tokens).toBeTruthy()
+            })
+
+          const foundUser = await User.findOne({ email: newUser.email })
+          expect(foundUser.tokens.length).toBe(1)
+        })
+
+        it('should return the user data', async () => {
+          await request(app)
+            .post('/users')
+            .send(newUser)
+            .expect(res => {
+              expect(res.body.user.email).toBe(newUser.email)
+              expect(res.body.user._id).toBeTruthy()
+              expect(res.body.user.createdAt).toBeTruthy()
+              expect(res.body.user.tokens).toBeTruthy()
+            })
+        })
+
+        it('should add the user to the DB', async () => {
+          await request(app)
+            .post('/users')
+            .send(newUser)
+
+          const foundUser = await User.findOne({ email: newUser.email })
+          expect(foundUser.email).toEqual(newUser.email)
+        })
       })
     })
 

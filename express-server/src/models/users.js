@@ -51,7 +51,8 @@ userSchema.pre('save', async function(next) {
 // create authentication token
 userSchema.methods.createAuthToken = async function () {
   const user = this
-  const payload = { _id: user._id, isAdmin: user.isAdmin }
+
+  const payload = { _id: user._id }
   const secret = process.env.JWT_SECRET
   const token = jwt.sign(payload, secret)
 
