@@ -77,7 +77,6 @@ describe('/notes', () => {
           .get('/notes')
 
         const foundNotes = await Note.find()
-        console.log(foundNotes)
         expect(foundNotes.length).toBe(0)
       })
     })
