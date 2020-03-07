@@ -85,59 +85,64 @@ describe('/users', () => {
 
     describe('if `email` is invalid', () => {
 
+      const userWithInvalidEmail = {
+        email: 1234,
+        password: '1234ASDF1!@#$asdf',
+      }
+
       it('should respond 400', async () => {
         await request(app)
           .post('/users')
-          .send({ email: 'bob@example.net', password: '1234ASDF1!@#$asdf' })
+          .send(userWithInvalidEmail)
           .expect(400)
       })
 
       it('should return an error message', async () => {
         await request(app)
           .post('/users')
-          .send(user)
+          .send(userWithInvalidEmail)
           .expect(res => {
             expect(res.text)
               .toContain('error')
           })
       })
-      //     it('should not add the user to the DB', async () => {
-      //       await request(app)
-      //         .post('/users')
-      //         .send(user)
-      //
-      //       const foundUser = await User.findOne({ email: user.email })
-      //       // console.log(foundUser)
-      //       expect(foundUser.email).not.toContain(user.email)
-      //     })
-      //   })
-      //   describe('if `password` is invalid', () => {
-      //     it('should respond 400', async () => {
-      //     })
-      //     it('should not add the user to the DB', async () => {
-      //     })
-      //   })
-      //   describe('if `email` and `password` are valid', () => {
-      //     describe('and `email` is already in the DB', () => {
-      //       it('should respond 400', async () => {
-      //       })
-      //       it('should not add the user to the DB', async () => {
-      //       })
-      //     })
-      //     describe('and `email` is not already in the DB', () => {
-      //       it('should respond 200', async () => {
-      //       })
-      //       it('should hash the password', async () => {
-      //       })
-      //       it('should return the auth token', async () => {
-      //       })
-      //       it('should return the user data', async () => {
-      //       })
-      //       it('should add the user to the DB', async () => {
-      //       })
-      //     })
-      //   })
+
+      it('should not add the user to the DB', async () => {
+        await request(app)
+          .post('/users')
+          .send(userWithInvalidEmail)
+
+        const foundUser = await User.findOne({ email: userWithInvalidEmail.email })
+        expect(foundUser).toBeFalsy()
+      })
     })
+    //   describe('if `password` is invalid', () => {
+    //     it('should respond 400', async () => {
+    //     })
+    //     it('should not add the user to the DB', async () => {
+    //     })
+    //   })
+    //   describe('if `email` and `password` are valid', () => {
+    //     describe('and `email` is already in the DB', () => {
+    //       it('should respond 400', async () => {
+    //       })
+    //       it('should not add the user to the DB', async () => {
+    //       })
+    //     })
+    //     describe('and `email` is not already in the DB', () => {
+    //       it('should respond 200', async () => {
+    //       })
+    //       it('should hash the password', async () => {
+    //       })
+    //       it('should return the auth token', async () => {
+    //       })
+    //       it('should return the user data', async () => {
+    //       })
+    //       it('should add the user to the DB', async () => {
+    //       })
+    //     })
+    //   })
+    // })
 
     // // GET /users
     // describe('GET /users', () => {
