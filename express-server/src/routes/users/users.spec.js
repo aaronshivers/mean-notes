@@ -6,16 +6,19 @@ const app = require('../../app')
 const User = require('../../models/users')
 
 describe('/users', () => {
-  let user
 
+  const user = {
+    email: 'user1@example.net',
+    password: 'asdfASDF1234!@#$',
+  }
+
+  // run before each test
   beforeEach(async () => {
-    user = {
-      _id: new ObjectId(),
-      email: 'user1@example.net',
-      password: 'asdfASDF1234!@#$',
-    }
 
+    // delete all users
     await User.deleteMany()
+
+    // save the user
     await new User(user).save()
   })
 
@@ -144,8 +147,8 @@ describe('/users', () => {
       describe('and `email` is already in the DB', () => {
 
         const duplicateUser = {
-          email: 'user1@example.net',
-          password: 'asdfASDF1234!@#$',
+          email: user.email,
+          password: user.password,
         }
 
         it('should respond 400', async () => {
@@ -155,22 +158,32 @@ describe('/users', () => {
             .expect(400)
         })
 
+        it('should return an error message', async () => {
+          await request(app)
+            .post('/users')
+            .send(duplicateUser)
+            .expect(res => {
+              expect(res.body)
+                .toEqual({ error: 'User Already Registered' })
+            })
+        })
+
         it('should not add the user to the DB', async () => {
           await request(app)
             .post('/users')
             .send(duplicateUser)
 
           const foundUser = await User.find()
-          console.log(foundUser)
-          expect(foundUser).toBeFalsy()
-          // const users = await User.find()
-          // console.log(users)
+          expect(foundUser.length).toBe(1)
         })
       })
 
       describe('and `email` is not already in the DB', () => {
 
-        const newUser = { email: 'user2@example.net', password: 'asdfASDF1234!@#$' }
+        const newUser = {
+          email: 'user2@example.net',
+          password: 'asdfASDF1234!@#$',
+        }
 
         it('should respond 200', async () => {
           await request(app)

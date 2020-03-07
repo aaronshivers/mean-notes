@@ -17,8 +17,8 @@ router.post('/users', validate(userValidator), async (req, res) => {
     const { email, password } = req.body
 
     // check DB for existing user
-    // const existingUser = await User.findOne({ email })
-    // if (existingUser) return res.status(400).send('User Already Registered')
+    const existingUser = await User.findOne({ email })
+    if (existingUser) return res.status(400).json({ error: 'User Already Registered'})
 
     // create user
     const user = await new User({ email, password })
