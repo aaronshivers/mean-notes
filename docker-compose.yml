@@ -8,6 +8,8 @@ services:
 
   angular:
     build: angular-client
+    depends_on:
+      - express
     ports:
       - "4200:4200"
     volumes:
@@ -16,6 +18,8 @@ services:
   express:
     build:
      context: express-server
+    depends_on:
+      - mongo
     ports:
       - "3000:3000"
     volumes:

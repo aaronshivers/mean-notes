@@ -18,7 +18,6 @@ describe('/notes', () => {
     await new Note(note).save()
   })
 
-
   describe('POST /notes', () => {
 
     it('should respond 201', async () => {
