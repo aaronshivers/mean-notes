@@ -116,33 +116,52 @@ describe('/users', () => {
         expect(foundUser).toBeFalsy()
       })
     })
-    //   describe('if `password` is invalid', () => {
-    //     it('should respond 400', async () => {
-    //     })
-    //     it('should not add the user to the DB', async () => {
-    //     })
-    //   })
-    //   describe('if `email` and `password` are valid', () => {
-    //     describe('and `email` is already in the DB', () => {
-    //       it('should respond 400', async () => {
-    //       })
-    //       it('should not add the user to the DB', async () => {
-    //       })
-    //     })
-    //     describe('and `email` is not already in the DB', () => {
-    //       it('should respond 200', async () => {
-    //       })
-    //       it('should hash the password', async () => {
-    //       })
-    //       it('should return the auth token', async () => {
-    //       })
-    //       it('should return the user data', async () => {
-    //       })
-    //       it('should add the user to the DB', async () => {
-    //       })
-    //     })
-    //   })
-    // })
+
+    describe('if `password` is invalid', () => {
+
+      const userWithInvalidPassword = {
+        email: 'bob@example.net',
+        password: '1234',
+      }
+
+      it('should respond 400', async () => {
+        await request(app)
+          .post('/users')
+          .send(userWithInvalidPassword)
+          .expect(400)
+      })
+
+      it('should not add the user to the DB', async () => {
+        await request(app)
+          .post('/users')
+          .send(userWithInvalidPassword)
+
+        const foundUser = await User.findOne({ email: userWithInvalidPassword.email })
+        expect(foundUser).toBeFalsy()
+      })
+
+      //   })
+      //   describe('if `email` and `password` are valid', () => {
+      //     describe('and `email` is already in the DB', () => {
+      //       it('should respond 400', async () => {
+      //       })
+      //       it('should not add the user to the DB', async () => {
+      //       })
+      //     })
+      //     describe('and `email` is not already in the DB', () => {
+      //       it('should respond 200', async () => {
+      //       })
+      //       it('should hash the password', async () => {
+      //       })
+      //       it('should return the auth token', async () => {
+      //       })
+      //       it('should return the user data', async () => {
+      //       })
+      //       it('should add the user to the DB', async () => {
+      //       })
+      //     })
+      //   })
+    })
 
     // // GET /users
     // describe('GET /users', () => {
