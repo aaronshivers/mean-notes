@@ -27,7 +27,7 @@ router.post('/users', validate(userValidator), async (req, res) => {
     await user.save()
 
     // create auth token
-    await user.createAuthToken();
+    await user.generateAuthToken();
 
     // respond 200 and return user data
     res.status(200).json({ user })

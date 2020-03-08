@@ -49,7 +49,7 @@ userSchema.pre('save', async function(next) {
 })
 
 // create authentication token
-userSchema.methods.createAuthToken = async function () {
+userSchema.methods.generateAuthToken = async function () {
   const user = this
 
   const payload = { _id: user._id }
