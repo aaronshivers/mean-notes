@@ -6,7 +6,7 @@ const User = require('../../models/users')
 const validate = require('../../middleware/validate')
 const userValidator = require('../../middleware/userValidator')
 
-router.post('/users/login', async (req, res) => {
+router.post('/login', async (req, res) => {
 
   try {
 
@@ -31,8 +31,9 @@ router.post('/users/login', async (req, res) => {
     // reject if token wasn't created
     if (!token) return res.status(500).json({ error: 'Server Error: Token Not Created' })
 
+    // respond 200 and send token
+    res.status(200).json(token)
 
-    res.status(401).json({ 'error': 'Invalid Login' })
   } catch (error) {
 
     // return an error message

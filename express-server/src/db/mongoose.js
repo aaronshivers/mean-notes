@@ -9,11 +9,11 @@ const options = {
 
 let server = '';
 
-if (process.env.NODE_ENV === 'development') {
-  server = 'mongodb://localhost:27017/notes'
-} else {
+// if (process.env.NODE_ENV === 'development') {
+//   server = 'mongodb://localhost:27017/notes'
+// } else {
   server = 'mongodb://mongo:/mean-notes'
-}
+// }
 
 const connectToDB = async () => {
   try {

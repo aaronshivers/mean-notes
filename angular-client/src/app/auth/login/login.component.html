@@ -1,4 +1,4 @@
-<form #f="ngForm" (ngSubmit)="onLogin()">
+<form #f="ngForm" (ngSubmit)="onLogin(f)">
   <label>Email<input type="email" name="email" autocomplete="email" ngModel></label>
   <label>Password<input type="password" name="password" autocomplete="password" ngModel></label>
   <button>Login</button>

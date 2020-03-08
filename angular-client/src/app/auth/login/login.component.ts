@@ -1,23 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: [ './login.component.css' ],
 })
 export class LoginComponent implements OnInit {
   private authSubscription: Subscription;
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
   }
 
-  private onLogin(): void {
-    this.authService.login()
+  private onLogin(f: NgForm): void {
+    const email = f.value.email;
+    const password = f.value.password;
+
+    this.authService.login({ email, password })
+      .subscribe((res) => {
+        console.log(res);
+        this.router.navigateByUrl('/items');
+        console.log('logged in');
+      });
   }
 }
