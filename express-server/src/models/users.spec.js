@@ -5,6 +5,10 @@ const User = require('../models/users')
 
 describe('users model', () => {
 
+  beforeEach(async () => {
+    await User.deleteMany()
+  })
+
   describe('user.generateAuthToken()', () => {
 
     it('should return a valid JWT', async () => {

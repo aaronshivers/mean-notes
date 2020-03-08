@@ -26,17 +26,22 @@ describe('/users', () => {
 
     describe('if `email` is invalid', () => {
 
+      const userWithInvalidEmail = {
+        email: 1234,
+        password: '1234ASDF1!@#$asdf',
+      }
+
       it('should respond 401', async () => {
         await request(app)
           .post('/users/login')
-          .send({ email: 1234, password: 'asdfASDF1234!@#$' })
+          .send(userWithInvalidEmail)
           .expect(401)
       })
 
       it('should return an error message', async () => {
         await request(app)
           .post('/users/login')
-          .send({ email: 1234, password: 'asdfASDF1234!@#$' })
+          .send(userWithInvalidEmail)
           .expect(res => {
             expect(res.text)
               .toEqual(JSON.stringify({ 'error': 'Invalid Login' }))
@@ -44,40 +49,88 @@ describe('/users', () => {
       })
 
       it('should not provide an `auth token`', async () => {
+        await request(app)
+          .post('/users/login')
+          .send(userWithInvalidEmail)
+          .expect(res => {
+            expect(res.body).not.toHaveProperty('tokens')
+          })
       })
     })
+
     describe('if `password` is invalid', () => {
+
+      const userWithInvalidPassword = {
+        email: 'bob@example.net',
+        password: '1234',
+      }
 
       it('should respond 401', async () => {
         await request(app)
           .post('/users/login')
-          .send({ email: 'email@test.net', password: 1234 })
+          .send(userWithInvalidPassword)
           .expect(401)
       })
 
       it('should return an error message', async () => {
         await request(app)
           .post('/users/login')
-          .send({ email: 'email@test.net', password: 1234 })
+          .send(userWithInvalidPassword)
           .expect(res => {
             expect(res.text)
               .toEqual(JSON.stringify({ 'error': 'Invalid Login' }))
           })
       })
 
-    })
-    describe('if `email` and `password` are valid', () => {
-      describe('should respond 200`', async () => {
-      })
-      describe('should return an `auth token`', async () => {
+      it('should not provide an `auth token`', async () => {
+        await request(app)
+          .post('/users/login')
+          .send(userWithInvalidPassword)
+          .expect(res => {
+            expect(res.body).not.toHaveProperty('tokens')
+          })
       })
     })
 
-    // it('should respond 200', async () => {
-    //   await request(app)
-    //     .get('/login')
-    //     .expect(200)
-    // })
+    describe('if `email` and `password` are valid', () => {
+
+      it('should respond 200`', async () => {
+        await request(app)
+          .post('/users/login')
+          .send(user)
+          .expect(200)
+      })
+
+      it('should create and return an `auth token`', async () => {
+        await request(app)
+          .post('/users/login')
+          .send(user)
+          .expect(res => {
+            expect(res.body).toHaveProperty('tokens')
+          })
+
+        const foundUser = await User.findOne({ email: user.email })
+        expect(foundUser.tokens.length).toBe(1)
+      })
+
+      it('should return the hashed password', async () => {
+        await request(app)
+          .post('/users/login')
+          .send(user)
+          .expect(res => {
+            expect(res.body.user.password).not.toEqual(user.password)
+          })
+      })
+
+      it('should return the user email', async () => {
+        await request(app)
+          .post('/users/login')
+          .send(user)
+          .expect(res => {
+            expect(res.body.email).toEqual(user.email)
+          })
+      })
+    })
   })
 
 
@@ -209,7 +262,7 @@ describe('/users', () => {
             .post('/users')
             .send(newUser)
             .expect(res => {
-              expect(res.body.user.tokens).toBeTruthy()
+              expect(res.body.user.tokens[0]).toHaveProperty('token')
             })
 
           const foundUser = await User.findOne({ email: newUser.email })
@@ -239,10 +292,15 @@ describe('/users', () => {
       })
     })
 
-    // // GET /users
+    // GET /users
     // describe('GET /users', () => {
+    //
     //   describe('if no `auth token` is provided', () => {
+    //
     //     it('should respond 401', async () => {
+    //       await request(app)
+    //         .get('/users')
+    //         .expect(401)
     //     })
     //     it('should return an error message', async () => {
     //     })
