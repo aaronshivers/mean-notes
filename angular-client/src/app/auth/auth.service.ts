@@ -5,15 +5,18 @@ import { shareReplay, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { Moment } from 'moment';
+import { Router } from '@angular/router';
+import { URL } from 'url';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  authUrl = 'http://localhost:3000/login';
+  authUrl: URL = 'http://localhost:3000/login';
 
   constructor(
     private http: HttpClient,
+    private router: Router
   ) { }
 
   isLoggedIn(): boolean {
@@ -26,7 +29,7 @@ export class AuthService {
 
   login(user: User): Observable<{}> {
     return this.http.post<User>(this.authUrl, user).pipe(
-      tap(() => this.setSession),
+      tap(response => this.setSession(response)),
       shareReplay(),
     );
   }
@@ -34,6 +37,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    this.router.navigateByUrl('/login')
   }
 
   getExpiration(): Moment {
@@ -42,7 +46,7 @@ export class AuthService {
     return moment(expiresAt);
   }
 
-  private setSession(authResult): void {
+  setSession(authResult): void {
     const expiresAt = moment().add(authResult.expiresIn, 'second');
 
     localStorage.setItem('id_token', authResult.idToken);
