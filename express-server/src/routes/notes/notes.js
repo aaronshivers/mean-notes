@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Note = require('../../models/notes')
+const auth = require('../../middleware/auth')
 
 router.post('/notes', async (req, res) => {
 
@@ -26,7 +27,7 @@ router.post('/notes', async (req, res) => {
   }
 })
 
-router.get('/notes', async (req, res) => {
+router.get('/notes', auth, async (req, res) => {
 
   try {
 
