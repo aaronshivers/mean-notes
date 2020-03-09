@@ -14,16 +14,16 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body
 
     // find user by email
-    const user = await User.findOne({email})
+    const user = await User.findOne({ email })
 
     // reject if user is not found
-    if (!user) return res.status(401).json({error: 'Invalid Login'})
+    if (!user) return res.status(401).json({ error: 'Invalid Login' })
 
     // verify user password
     const hash = await bcrypt.compare(password, user.password)
 
     // reject if password is incorrect
-    if (!hash) return res.status(401).json({error: 'Invalid Login'})
+    if (!hash) return res.status(401).json({ error: 'Invalid Login' })
 
     // create token
     const token = await user.generateAuthToken()
@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
     if (!token) return res.status(500).json({ error: 'Server Error: Token Not Created' })
 
     // respond 200 and send token
-    res.status(200).json(token)
+    res.status(200).json({ idToken: token, expiresIn: 86400000 })
 
   } catch (error) {
 
@@ -59,7 +59,7 @@ router.post('/users', validate(userValidator), async (req, res) => {
     await user.save()
 
     // create auth token
-    await user.generateAuthToken();
+    await user.generateAuthToken()
 
     // respond 200 and return user data
     res.status(200).json({ user })
