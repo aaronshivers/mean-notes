@@ -4,7 +4,7 @@ const router = express.Router()
 const Note = require('../../models/notes')
 const auth = require('../../middleware/auth')
 
-router.post('/notes', async (req, res) => {
+router.post('/notes', auth, async (req, res) => {
 
   try {
 
@@ -47,7 +47,7 @@ router.get('/notes', auth, async (req, res) => {
   }
 })
 
-router.get('/notes/:id', async (req, res) => {
+router.get('/notes/:id', auth, async (req, res) => {
 
   try {
 
@@ -69,10 +69,9 @@ router.get('/notes/:id', async (req, res) => {
     res.status(400).json({ error: error.message })
 
   }
-
 })
 
-router.delete('/notes/:id', async (req, res) => {
+router.delete('/notes/:id', auth, async (req, res) => {
 
   try {
 
@@ -94,10 +93,9 @@ router.delete('/notes/:id', async (req, res) => {
     res.status(400).json({ error: error.message })
 
   }
-
 })
 
-router.patch('/notes/:id', async (req, res) => {
+router.patch('/notes/:id', auth, async (req, res) => {
 
   try {
 
@@ -127,7 +125,6 @@ router.patch('/notes/:id', async (req, res) => {
     res.status(400).json({ error: error.message })
 
   }
-
 })
 
 module.exports = router

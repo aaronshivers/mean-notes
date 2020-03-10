@@ -22,7 +22,7 @@ describe('/users', () => {
     await new User(user).save()
   })
 
-  describe('POST /users/login', () => {
+  describe('POST /login', () => {
 
     describe('if `email` is invalid', () => {
 
@@ -33,14 +33,14 @@ describe('/users', () => {
 
       it('should respond 401', async () => {
         await request(app)
-          .post('/users/login')
+          .post('/login')
           .send(userWithInvalidEmail)
           .expect(401)
       })
 
       it('should return an error message', async () => {
         await request(app)
-          .post('/users/login')
+          .post('/login')
           .send(userWithInvalidEmail)
           .expect(res => {
             expect(res.text)
@@ -50,7 +50,7 @@ describe('/users', () => {
 
       it('should not provide an `auth token`', async () => {
         await request(app)
-          .post('/users/login')
+          .post('/login')
           .send(userWithInvalidEmail)
           .expect(res => {
             expect(res.body).not.toHaveProperty('tokens')
@@ -67,14 +67,14 @@ describe('/users', () => {
 
       it('should respond 401', async () => {
         await request(app)
-          .post('/users/login')
+          .post('/login')
           .send(userWithInvalidPassword)
           .expect(401)
       })
 
       it('should return an error message', async () => {
         await request(app)
-          .post('/users/login')
+          .post('/login')
           .send(userWithInvalidPassword)
           .expect(res => {
             expect(res.text)
@@ -84,7 +84,7 @@ describe('/users', () => {
 
       it('should not provide an `auth token`', async () => {
         await request(app)
-          .post('/users/login')
+          .post('/login')
           .send(userWithInvalidPassword)
           .expect(res => {
             expect(res.body).not.toHaveProperty('tokens')
@@ -96,14 +96,14 @@ describe('/users', () => {
 
       it('should respond 200`', async () => {
         await request(app)
-          .post('/users/login')
+          .post('/login')
           .send(user)
           .expect(200)
       })
 
       it('should create and return an `auth token`', async () => {
         await request(app)
-          .post('/users/login')
+          .post('/login')
           .send(user)
           .expect(res => {
             expect(res.body).toHaveProperty('tokens')
@@ -115,7 +115,7 @@ describe('/users', () => {
 
       it('should return the hashed password', async () => {
         await request(app)
-          .post('/users/login')
+          .post('/login')
           .send(user)
           .expect(res => {
             expect(res.body.user.password).not.toEqual(user.password)
@@ -124,7 +124,7 @@ describe('/users', () => {
 
       it('should return the user email', async () => {
         await request(app)
-          .post('/users/login')
+          .post('/login')
           .send(user)
           .expect(res => {
             expect(res.body.email).toEqual(user.email)
