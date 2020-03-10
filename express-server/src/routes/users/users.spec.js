@@ -106,29 +106,29 @@ describe('/users', () => {
           .post('/login')
           .send(user)
           .expect(res => {
-            expect(res.body).toHaveProperty('tokens')
+            expect(res.body).toHaveProperty('idToken')
           })
 
         const foundUser = await User.findOne({ email: user.email })
         expect(foundUser.tokens.length).toBe(1)
       })
 
-      it('should return the hashed password', async () => {
+      it('should return the `expiresIn` unix time', async () => {
         await request(app)
           .post('/login')
           .send(user)
           .expect(res => {
-            expect(res.body.user.password).not.toEqual(user.password)
+            expect(res.body).toHaveProperty('expiresIn')
           })
       })
 
-      it('should return the user email', async () => {
+      it('should hash the user password', async () => {
         await request(app)
           .post('/login')
           .send(user)
-          .expect(res => {
-            expect(res.body.email).toEqual(user.email)
-          })
+
+        const foundUser = await User.findOne({ email: user.email })
+        expect(foundUser.password).not.toEqual(user.password)
       })
     })
   })
