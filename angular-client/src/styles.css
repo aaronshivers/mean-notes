@@ -17,3 +17,52 @@ body {
   font-size: 2rem;
   font-family: "Liberation Mono", monospace;
 }
+
+.title {
+  margin: 2rem 0;
+}
+
+.button {
+  font-family: inherit;
+  font-weight: bold;
+  border: 3px solid black;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.form {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.form__label {
+  width: 100%;
+}
+
+.form__input {
+  font-family: inherit;
+  border: 3px solid black;
+  padding: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  flex-grow: 1;
+  outline: none;
+}
+
+.form__button {
+  background-color: darkseagreen;
+  justify-self: end;
+}
+
+.form__button:hover {
+  color: white;
+  background-color: #506a50;
+}

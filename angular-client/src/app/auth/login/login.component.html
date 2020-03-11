@@ -1,5 +1,25 @@
-<form #f="ngForm" (ngSubmit)="onLogin(f)">
-  <label>Email<input type="email" name="email" autocomplete="email" ngModel></label>
-  <label>Password<input type="password" name="password" autocomplete="password" ngModel></label>
-  <button>Login</button>
+<app-heading>Login</app-heading>
+
+<form #f="ngForm" (ngSubmit)="onLogin(f)" class="form">
+  <label for="email" class="form__label">
+    Email
+  </label>
+  <input
+    id="email"
+    autocomplete="email"
+    class="form__input"
+    name="email"
+    ngModel
+    type="email">
+  <label for="password" class="form__label">
+    Password
+  </label>
+  <input
+    id="password"
+    autocomplete="password"
+    class="form__input"
+    name="password"
+    ngModel
+    type="password">
+  <button class="button form__button">Login</button>
 </form>
