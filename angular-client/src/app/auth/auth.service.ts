@@ -12,7 +12,7 @@ import { URL } from 'url';
   providedIn: 'root',
 })
 export class AuthService {
-  authUrl: URL = 'http://localhost:3000/login';
+  authUrl: URL = 'http://localhost:3000/';
 
   constructor(
     private http: HttpClient,
@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   login(user: User): Observable<{}> {
-    return this.http.post<User>(this.authUrl, user).pipe(
+    return this.http.post<User>(this.authUrl + 'login', user).pipe(
       tap(response => this.setSession(response)),
       shareReplay(),
     );
@@ -51,5 +51,12 @@ export class AuthService {
 
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+  }
+
+  signup(user: User): Observable<{}> {
+    return this.http.post<User>(this.authUrl + 'login', user).pipe(
+      tap(response => this.setSession(response)),
+      shareReplay(),
+    );
   }
 }

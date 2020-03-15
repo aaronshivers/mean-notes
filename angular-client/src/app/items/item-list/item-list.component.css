@@ -19,11 +19,3 @@
 .list__text {
   cursor: pointer;
 }
-
-.list__button {
-  background-color: crimson;
-}
-
-.list__button:hover {
-  background-color: #a70f2e;
-}

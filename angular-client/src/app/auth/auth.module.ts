@@ -4,7 +4,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { AuthInterceptor } from './auth-interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
     SharedModule,
     FormsModule,
     AuthRoutingModule,
+    ReactiveFormsModule,
   ],
   providers: [ {
     provide: HTTP_INTERCEPTORS,

@@ -1,6 +1,6 @@
 <app-heading>Login</app-heading>
 
-<form #f="ngForm" (ngSubmit)="onLogin(f)" class="form">
+<form [formGroup]="userForm" class="form">
   <label for="email" class="form__label">
     Email
   </label>
@@ -8,8 +8,7 @@
     id="email"
     autocomplete="email"
     class="form__input"
-    name="email"
-    ngModel
+    formControlName="email"
     type="email">
   <label for="password" class="form__label">
     Password
@@ -18,8 +17,8 @@
     id="password"
     autocomplete="password"
     class="form__input"
-    name="password"
-    ngModel
+    formControlName="password"
     type="password">
-  <button class="button form__button">Login</button>
+  <button (click)="onLogin()" class="button button--success">Login</button>
+  <button (click)="onSignup()" class="button button--warning">Signup</button>
 </form>
