@@ -1,10 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  --white: #eff6e6;
-  --black: #271b33;
-
-  --background: var(--white);
+  --light: #eff6e6;
+  --dark: #271b33;
 
   --primary: #e2aa81;
   --secondary: #999999;
@@ -26,8 +24,9 @@ html {
 }
 
 body {
+  color: var(--dark);
   width: 500px;
-  background-color: var(--background);
+  background-color: var(--light);
   font-size: 2rem;
   font-family: "Liberation Mono", monospace;
 }
@@ -62,7 +61,7 @@ body {
 
 .form__input {
   font-family: inherit;
-  border: 3px solid black;
+  border: 3px solid var(--dark);
   padding: 1rem;
   margin-bottom: 1rem;
   width: 100%;
