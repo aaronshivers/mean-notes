@@ -26,4 +26,4 @@ services:
       - ./express-server:/app
       - /app/node_modules
     environment:
-      SCRIPT: dev
+      SCRIPT: test-watch
