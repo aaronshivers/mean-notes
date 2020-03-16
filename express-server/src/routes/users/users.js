@@ -61,8 +61,8 @@ router.post('/users', validate(userValidator), async (req, res) => {
       if (!hash) return res.status(401).json({ error: 'Invalid Login' })
 
       // create token
-      const token = await user.generateAuthToken()
-      console.log('token', token)
+      const token = await existingUser.generateAuthToken()
+
       // reject if token wasn't created
       if (!token) return res.status(500).json({ error: 'Server Error: Token Not Created' })
 
