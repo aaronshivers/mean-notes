@@ -12,7 +12,7 @@ import { URL } from 'url';
   providedIn: 'root',
 })
 export class AuthService {
-  authUrl: URL = 'http://localhost:3000/';
+  authUrl: URL = 'http://localhost:3000/users';
 
   constructor(
     private http: HttpClient,
@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   login(user: User): Observable<{}> {
-    return this.http.post<User>(this.authUrl + 'login', user).pipe(
+    return this.http.post<User>(this.authUrl, user).pipe(
       tap(response => this.setSession(response)),
       shareReplay(),
     );

@@ -1,6 +1,6 @@
 <app-heading>Login</app-heading>
 
-<form [formGroup]="userForm" class="form">
+<form [formGroup]="userForm" (ngSubmit)="onLogin()" class="form">
   <label for="email" class="form__label">
     Email
   </label>
@@ -19,6 +19,5 @@
     class="form__input"
     formControlName="password"
     type="password">
-  <button (click)="onLogin()" class="button button--success">Login</button>
-  <button (click)="onSignup()" class="button button--warning">Signup</button>
+  <button type="submit" class="button button--success">Login</button>
 </form>

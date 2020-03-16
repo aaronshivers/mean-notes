@@ -1,6 +1,5 @@
 const expect = require('expect')
 const request = require('supertest')
-const { ObjectId } = require('mongodb')
 
 const app = require('../../app')
 const User = require('../../models/users')
@@ -21,118 +20,6 @@ describe('/users', () => {
     // save the user
     await new User(user).save()
   })
-
-  // describe('POST /login', () => {
-  //
-  //   describe('if `email` is invalid', () => {
-  //
-  //     const userWithInvalidEmail = {
-  //       email: 1234,
-  //       password: '1234ASDF1!@#$asdf',
-  //     }
-  //
-  //     it('should respond 401', async () => {
-  //       await request(app)
-  //         .post('/login')
-  //         .send(userWithInvalidEmail)
-  //         .expect(401)
-  //     })
-  //
-  //     it('should return an error message', async () => {
-  //       await request(app)
-  //         .post('/login')
-  //         .send(userWithInvalidEmail)
-  //         .expect(res => {
-  //           expect(res.text)
-  //             .toEqual(JSON.stringify({ 'error': 'Invalid Login' }))
-  //         })
-  //     })
-  //
-  //     it('should not provide an `auth token`', async () => {
-  //       await request(app)
-  //         .post('/login')
-  //         .send(userWithInvalidEmail)
-  //         .expect(res => {
-  //           expect(res.body).not.toHaveProperty('tokens')
-  //         })
-  //     })
-  //   })
-  //
-  //   describe('if `password` is invalid', () => {
-  //
-  //     const userWithInvalidPassword = {
-  //       email: 'bob@example.net',
-  //       password: '1234',
-  //     }
-  //
-  //     it('should respond 401', async () => {
-  //       await request(app)
-  //         .post('/login')
-  //         .send(userWithInvalidPassword)
-  //         .expect(401)
-  //     })
-  //
-  //     it('should return an error message', async () => {
-  //       await request(app)
-  //         .post('/login')
-  //         .send(userWithInvalidPassword)
-  //         .expect(res => {
-  //           expect(res.text)
-  //             .toEqual(JSON.stringify({ 'error': 'Invalid Login' }))
-  //         })
-  //     })
-  //
-  //     it('should not provide an `auth token`', async () => {
-  //       await request(app)
-  //         .post('/login')
-  //         .send(userWithInvalidPassword)
-  //         .expect(res => {
-  //           expect(res.body).not.toHaveProperty('tokens')
-  //         })
-  //     })
-  //   })
-  //
-  //   describe('if `email` and `password` are valid', () => {
-  //
-  //     it('should respond 200`', async () => {
-  //       await request(app)
-  //         .post('/login')
-  //         .send(user)
-  //         .expect(200)
-  //     })
-  //
-  //     it('should create and return an `auth token`', async () => {
-  //       await request(app)
-  //         .post('/login')
-  //         .send(user)
-  //         .expect(res => {
-  //           expect(res.body).toHaveProperty('idToken')
-  //         })
-  //
-  //       const foundUser = await User.findOne({ email: user.email })
-  //       expect(foundUser.tokens.length).toBe(1)
-  //     })
-  //
-  //     it('should return the `expiresIn` unix time', async () => {
-  //       await request(app)
-  //         .post('/login')
-  //         .send(user)
-  //         .expect(res => {
-  //           expect(res.body).toHaveProperty('expiresIn')
-  //         })
-  //     })
-  //
-  //     it('should hash the user password', async () => {
-  //       await request(app)
-  //         .post('/login')
-  //         .send(user)
-  //
-  //       const foundUser = await User.findOne({ email: user.email })
-  //       expect(foundUser.password).not.toEqual(user.password)
-  //     })
-  //   })
-  // })
-
 
   // POST /users
   describe('POST /users', () => {
@@ -225,11 +112,8 @@ describe('/users', () => {
 
       describe('and `email` is already in the DB', () => {
 
-        // beforeEach(async () => await new User(user).save())
+        describe('and password is incorrect', async () => {
 
-        describe('and password is incorrect', async() => {
-          // console.log(user.email, 'hhhhhhhhhhhhhhhhhhhhhhhhhhh')
-          // console.log(await User.find({ email: user.email }))
           const userWithIncorrectPassword = {
             email: user.email,
             password: 'hi12!Dude',
@@ -290,6 +174,7 @@ describe('/users', () => {
               .send(user)
               .expect(res => {
                 expect(res.body).toHaveProperty('idToken')
+                // todo: test for the value of idToken
               })
 
             const foundUser = await User.findOne({ email: user.email })
@@ -392,46 +277,5 @@ describe('/users', () => {
         })
       })
     })
-
-    // GET /users
-    // describe('GET /users', () => {
-    //
-    //   describe('if no `auth token` is provided', () => {
-    //
-    //     it('should respond 401', async () => {
-    //       await request(app)
-    //         .get('/users')
-    //         .expect(401)
-    //     })
-    //     it('should return an error message', async () => {
-    //     })
-    //     it('should not return any `user` data', async () => {
-    //     })
-    //   })
-    //   describe('if an `auth token` is provided', () => {
-    //     describe('and the `user` is not an `admin`', () => {
-    //       it('should respond 401', async () => {
-    //       })
-    //       it('should return an error message', async () => {
-    //       })
-    //       it('should not return any `user` data', async () => {
-    //       })
-    //     })
-    //     describe('and the `user` is an `admin`', () => {
-    //       it('should respond 200', async () => {
-    //       })
-    //       it('should return all `users`', async () => {
-    //       })
-    //     })
-    //   })
-    // })
-    // // GET /users/:id
-    // describe('GET /users/:id', () => {
-    // })
-    // // DELETE /users/:id
-    // describe('DELETE /users/:id', () => {
-    // })
-    // // PATCH /users/:id
-    // describe('PATCH /users/:id', () => {
   })
 })

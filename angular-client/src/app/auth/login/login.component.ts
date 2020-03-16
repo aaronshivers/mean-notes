@@ -31,13 +31,4 @@ export class LoginComponent {
     this.authService.login({ email, password })
       .subscribe(() => this.router.navigateByUrl('/items'));
   }
-
-  private onSignup(): void {
-    const email = this.userForm.value.email;
-    const password = this.userForm.value.password;
-    console.log(email, password);
-
-    this.authService.signup({ email, password })
-      .subscribe(() => this.router.navigateByUrl('/items'));
-  }
 }
