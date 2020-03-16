@@ -8,7 +8,7 @@ import { map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ItemService {
-  itemsUrl: string = 'http://localhost:3000/notes/';
+  itemsUrl = 'http://localhost:3000/notes/';
   itemsChanged = new Subject<Item[]>();
   private items: Item[] = [];
 
@@ -22,8 +22,8 @@ export class ItemService {
 
   addItem(item: Item): void {
     this.http.post<Item>(this.itemsUrl, item)
-      .subscribe((item: Item) => {
-        this.items.push(item);
+      .subscribe((returnedItem: Item) => {
+        this.items.push(returnedItem);
         this.itemsChanged.next(this.items.slice());
       });
   }

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
-import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
   styleUrls: [ './login.component.css' ],
 })
 export class LoginComponent {
-  private authSubscription: Subscription;
   userForm: FormGroup;
 
   constructor(
@@ -20,8 +19,8 @@ export class LoginComponent {
   ) {
     this.userForm = this.formBuilder.group({
       email: '',
-      password: ''
-    })
+      password: '',
+    });
   }
 
   private onLogin(): void {

@@ -22,116 +22,116 @@ describe('/users', () => {
     await new User(user).save()
   })
 
-  describe('POST /login', () => {
-
-    describe('if `email` is invalid', () => {
-
-      const userWithInvalidEmail = {
-        email: 1234,
-        password: '1234ASDF1!@#$asdf',
-      }
-
-      it('should respond 401', async () => {
-        await request(app)
-          .post('/login')
-          .send(userWithInvalidEmail)
-          .expect(401)
-      })
-
-      it('should return an error message', async () => {
-        await request(app)
-          .post('/login')
-          .send(userWithInvalidEmail)
-          .expect(res => {
-            expect(res.text)
-              .toEqual(JSON.stringify({ 'error': 'Invalid Login' }))
-          })
-      })
-
-      it('should not provide an `auth token`', async () => {
-        await request(app)
-          .post('/login')
-          .send(userWithInvalidEmail)
-          .expect(res => {
-            expect(res.body).not.toHaveProperty('tokens')
-          })
-      })
-    })
-
-    describe('if `password` is invalid', () => {
-
-      const userWithInvalidPassword = {
-        email: 'bob@example.net',
-        password: '1234',
-      }
-
-      it('should respond 401', async () => {
-        await request(app)
-          .post('/login')
-          .send(userWithInvalidPassword)
-          .expect(401)
-      })
-
-      it('should return an error message', async () => {
-        await request(app)
-          .post('/login')
-          .send(userWithInvalidPassword)
-          .expect(res => {
-            expect(res.text)
-              .toEqual(JSON.stringify({ 'error': 'Invalid Login' }))
-          })
-      })
-
-      it('should not provide an `auth token`', async () => {
-        await request(app)
-          .post('/login')
-          .send(userWithInvalidPassword)
-          .expect(res => {
-            expect(res.body).not.toHaveProperty('tokens')
-          })
-      })
-    })
-
-    describe('if `email` and `password` are valid', () => {
-
-      it('should respond 200`', async () => {
-        await request(app)
-          .post('/login')
-          .send(user)
-          .expect(200)
-      })
-
-      it('should create and return an `auth token`', async () => {
-        await request(app)
-          .post('/login')
-          .send(user)
-          .expect(res => {
-            expect(res.body).toHaveProperty('idToken')
-          })
-
-        const foundUser = await User.findOne({ email: user.email })
-        expect(foundUser.tokens.length).toBe(1)
-      })
-
-      it('should return the `expiresIn` unix time', async () => {
-        await request(app)
-          .post('/login')
-          .send(user)
-          .expect(res => {
-            expect(res.body).toHaveProperty('expiresIn')
-          })
-      })
-
-      it('should hash the user password', async () => {
-        await request(app)
-          .post('/login')
-          .send(user)
-
-        const foundUser = await User.findOne({ email: user.email })
-        expect(foundUser.password).not.toEqual(user.password)
-      })
-    })
-  })
+  // describe('POST /login', () => {
+  //
+  //   describe('if `email` is invalid', () => {
+  //
+  //     const userWithInvalidEmail = {
+  //       email: 1234,
+  //       password: '1234ASDF1!@#$asdf',
+  //     }
+  //
+  //     it('should respond 401', async () => {
+  //       await request(app)
+  //         .post('/login')
+  //         .send(userWithInvalidEmail)
+  //         .expect(401)
+  //     })
+  //
+  //     it('should return an error message', async () => {
+  //       await request(app)
+  //         .post('/login')
+  //         .send(userWithInvalidEmail)
+  //         .expect(res => {
+  //           expect(res.text)
+  //             .toEqual(JSON.stringify({ 'error': 'Invalid Login' }))
+  //         })
+  //     })
+  //
+  //     it('should not provide an `auth token`', async () => {
+  //       await request(app)
+  //         .post('/login')
+  //         .send(userWithInvalidEmail)
+  //         .expect(res => {
+  //           expect(res.body).not.toHaveProperty('tokens')
+  //         })
+  //     })
+  //   })
+  //
+  //   describe('if `password` is invalid', () => {
+  //
+  //     const userWithInvalidPassword = {
+  //       email: 'bob@example.net',
+  //       password: '1234',
+  //     }
+  //
+  //     it('should respond 401', async () => {
+  //       await request(app)
+  //         .post('/login')
+  //         .send(userWithInvalidPassword)
+  //         .expect(401)
+  //     })
+  //
+  //     it('should return an error message', async () => {
+  //       await request(app)
+  //         .post('/login')
+  //         .send(userWithInvalidPassword)
+  //         .expect(res => {
+  //           expect(res.text)
+  //             .toEqual(JSON.stringify({ 'error': 'Invalid Login' }))
+  //         })
+  //     })
+  //
+  //     it('should not provide an `auth token`', async () => {
+  //       await request(app)
+  //         .post('/login')
+  //         .send(userWithInvalidPassword)
+  //         .expect(res => {
+  //           expect(res.body).not.toHaveProperty('tokens')
+  //         })
+  //     })
+  //   })
+  //
+  //   describe('if `email` and `password` are valid', () => {
+  //
+  //     it('should respond 200`', async () => {
+  //       await request(app)
+  //         .post('/login')
+  //         .send(user)
+  //         .expect(200)
+  //     })
+  //
+  //     it('should create and return an `auth token`', async () => {
+  //       await request(app)
+  //         .post('/login')
+  //         .send(user)
+  //         .expect(res => {
+  //           expect(res.body).toHaveProperty('idToken')
+  //         })
+  //
+  //       const foundUser = await User.findOne({ email: user.email })
+  //       expect(foundUser.tokens.length).toBe(1)
+  //     })
+  //
+  //     it('should return the `expiresIn` unix time', async () => {
+  //       await request(app)
+  //         .post('/login')
+  //         .send(user)
+  //         .expect(res => {
+  //           expect(res.body).toHaveProperty('expiresIn')
+  //         })
+  //     })
+  //
+  //     it('should hash the user password', async () => {
+  //       await request(app)
+  //         .post('/login')
+  //         .send(user)
+  //
+  //       const foundUser = await User.findOne({ email: user.email })
+  //       expect(foundUser.password).not.toEqual(user.password)
+  //     })
+  //   })
+  // })
 
 
   // POST /users
@@ -156,8 +156,7 @@ describe('/users', () => {
           .post('/users')
           .send(userWithInvalidEmail)
           .expect(res => {
-            expect(res.text)
-              .toContain('error')
+            expect(res.body).toHaveProperty('error')
           })
       })
 
@@ -168,6 +167,15 @@ describe('/users', () => {
 
         const foundUser = await User.findOne({ email: userWithInvalidEmail.email })
         expect(foundUser).toBeFalsy()
+      })
+
+      it('should not provide an `auth token`', async () => {
+        await request(app)
+          .post('/users')
+          .send(userWithInvalidEmail)
+          .expect(res => {
+            expect(res.body).not.toHaveProperty('tokens')
+          })
       })
     })
 
@@ -185,6 +193,15 @@ describe('/users', () => {
           .expect(400)
       })
 
+      it('should return an error message', async () => {
+        await request(app)
+          .post('/users')
+          .send(userWithInvalidPassword)
+          .expect(res => {
+            expect(res.body).toHaveProperty('error')
+          })
+      })
+
       it('should not add the user to the DB', async () => {
         await request(app)
           .post('/users')
@@ -193,41 +210,118 @@ describe('/users', () => {
         const foundUser = await User.findOne({ email: userWithInvalidPassword.email })
         expect(foundUser).toBeFalsy()
       })
+
+      it('should not provide an `auth token`', async () => {
+        await request(app)
+          .post('/users')
+          .send(userWithInvalidPassword)
+          .expect(res => {
+            expect(res.body).not.toHaveProperty('tokens')
+          })
+      })
     })
 
     describe('if `email` and `password` are valid', () => {
 
       describe('and `email` is already in the DB', () => {
 
-        const duplicateUser = {
-          email: user.email,
-          password: user.password,
-        }
+        // beforeEach(async () => await new User(user).save())
 
-        it('should respond 400', async () => {
-          await request(app)
-            .post('/users')
-            .send(duplicateUser)
-            .expect(400)
+        describe('and password is incorrect', async() => {
+          // console.log(user.email, 'hhhhhhhhhhhhhhhhhhhhhhhhhhh')
+          // console.log(await User.find({ email: user.email }))
+          const userWithIncorrectPassword = {
+            email: user.email,
+            password: 'hi12!Dude',
+          }
+
+          it('should respond 401', async () => {
+            await request(app)
+              .post('/users')
+              .send(userWithIncorrectPassword)
+              .expect(401)
+          })
+
+          it('should return an error message', async () => {
+            await request(app)
+              .post('/users')
+              .send(userWithIncorrectPassword)
+              .expect(res => {
+                expect(res.body).toHaveProperty('error')
+              })
+          })
+
+          it('should not provide an `auth token`', async () => {
+            await request(app)
+              .post('/users')
+              .send(userWithIncorrectPassword)
+              .expect(res => {
+                expect(res.body).not.toHaveProperty('tokens')
+              })
+          })
+
+          it('should not add a duplicate user to the DB', async () => {
+            await request(app)
+              .post('/users')
+              .send(userWithIncorrectPassword)
+
+            const foundUser = await User.find({ email: user.email })
+            expect(foundUser.length).toBe(1)
+          })
         })
 
-        it('should return an error message', async () => {
-          await request(app)
-            .post('/users')
-            .send(duplicateUser)
-            .expect(res => {
-              expect(res.body)
-                .toEqual({ error: 'User Already Registered' })
-            })
-        })
+        describe('and password is correct', () => {
 
-        it('should not add the user to the DB', async () => {
-          await request(app)
-            .post('/users')
-            .send(duplicateUser)
+          const existingUser = {
+            email: user.email,
+            password: user.password,
+          }
 
-          const foundUser = await User.find()
-          expect(foundUser.length).toBe(1)
+          it('should respond 200`', async () => {
+            await request(app)
+              .post('/users')
+              .send(user)
+              .expect(200)
+          })
+
+          it('should create and return an `auth token`', async () => {
+            await request(app)
+              .post('/users')
+              .send(user)
+              .expect(res => {
+                expect(res.body).toHaveProperty('idToken')
+              })
+
+            const foundUser = await User.findOne({ email: user.email })
+            expect(foundUser.tokens.length).toBe(1)
+          })
+
+          it('should return the `expiresIn` unix time', async () => {
+            await request(app)
+              .post('/users')
+              .send(user)
+              .expect(res => {
+                expect(res.body).toHaveProperty('expiresIn')
+              })
+          })
+
+          it('should hash the user password', async () => {
+            await request(app)
+              .post('/users')
+              .send(user)
+
+            const foundUser = await User.findOne({ email: user.email })
+            expect(foundUser.password).not.toEqual(user.password)
+          })
+
+          it('should not add a duplicate user to the DB', async () => {
+            await request(app)
+              .post('/users')
+              .send(existingUser)
+
+            const foundUser = await User.find({ email: user.email })
+            expect(foundUser.length).toBe(1)
+          })
         })
       })
 
@@ -269,6 +363,15 @@ describe('/users', () => {
           expect(foundUser.tokens.length).toBe(1)
         })
 
+        it('should return the `expiresIn` unix time', async () => {
+          await request(app)
+            .post('/users')
+            .send(user)
+            .expect(res => {
+              expect(res.body).toHaveProperty('expiresIn')
+            })
+        })
+
         it('should return the user data', async () => {
           await request(app)
             .post('/users')
@@ -276,8 +379,6 @@ describe('/users', () => {
             .expect(res => {
               expect(res.body.user.email).toBe(newUser.email)
               expect(res.body.user._id).toBeTruthy()
-              expect(res.body.user.createdAt).toBeTruthy()
-              expect(res.body.user.tokens).toBeTruthy()
             })
         })
 
